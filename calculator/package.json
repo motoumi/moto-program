@@ -1,0 +1,38 @@
+{
+  "name": "moto-calculator",
+  "version": "0.0.0",
+  "description": "JS Calculator for program study",
+  "dependencies": {
+    "jquery": "latest",
+    "underscore": "latest"
+  },
+  "devDependencies": {
+    "glob": "latest",
+    "del": "latest",
+    "resolve": "latest",
+    "vinyl-source-stream": "latest",
+    "require-dir": "latest",
+    "gulp-rename": "latest",
+    "gulp-replace": "latest",
+    "gulp": "latest",
+    "through2": "latest",
+    "gulp-jshint": "latest",
+    "gulp-concat": "latest",
+    "gulp-derequire": "latest",
+    "browserify": "latest",
+    "browser-sync": "latest",
+    "mocha": "latest",
+    "gulp-minify-css": "latest",
+    "gulp-uglify": "latest",
+    "gulp-compass": "latest",
+    "chai": "*",
+    "chai-as-promised": "*",
+    "colors": "*",
+    "sinon": "*",
+    "sinon-chai": "*"
+  },
+  "engines": {
+    "node": ">=4.2.2"
+  },
+  "main": "./lib/Calculator.js"
+}

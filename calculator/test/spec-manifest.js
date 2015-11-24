@@ -21,7 +21,7 @@ Button.prototype = {
   initialize: function(options) {
     this.onClick = options.onClick || function() {};
     this.$el = $('<button></button>', {
-      "class": 'calculator-button ' + options.className,
+      "class": 'calculator-button ' + options.text + ' ' + options.className,
       text: options.text,
       on: {
         click: this.onClick
@@ -47,7 +47,7 @@ var Screen = require('./Screen');
 // options:
 // - target The DOM element we will fill in with our calculator
 //
-var BUTTONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '+', '-', '*', '/', '=', 'c', 'ca'];
+var BUTTONS = ['c', 'ca', 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, '+', '-', '*', '/', '='];
 
 var Calculator = function(options) {
   options || (options = {});
@@ -92,8 +92,11 @@ Calculator.prototype = {
         this.clearAll();
       break;
       case '=':
-        this.result = this.calculate(this.screen.value());
-        this.screen.value(this.result);
+        if(this.operation) {
+          this.result = this.calculate(this.screen.value());
+          this.screen.value(this.result);
+          this.operation = undefined;
+        }
       break;
       default:
         if(value >=0 || value <=9) {
@@ -104,6 +107,15 @@ Calculator.prototype = {
           this.screen.clear();
         }
     }
+  },
+
+  clear() {
+    this.screen.clear();
+  },
+
+  clearAll() {
+    this.screen.clear();
+    this.result = 0;
   },
 
   calculate(value) {
@@ -138,7 +150,7 @@ Screen.prototype = {
 
   initialize(options) {
     this.$el = $('<div></div>', {
-      'class': options.className
+      'class': options.className + ' screen'
     });
   },
 
@@ -161,9 +173,11 @@ Screen.prototype = {
 module.exports = Screen;
 
 },{"jquery":"jquery"}],4:[function(require,module,exports){
-'use strict'
+'use strict';
+
 var Calculator = require('../lib/Calculator.js')
 var calculator;
+var $ = require('jquery');
 
 function setup() {
   calculator = new Calculator({target: '#page'});
@@ -173,78 +187,133 @@ function setup() {
 function teardown() {
   calculator.remove();
 }
-
+function click() {
+  var args = Array.prototype.slice.call(arguments);
+  args.forEach(function(button) {
+    var selector='.calculator-button:contains(' + button + ')';
+    var el = calculator.$el.find(selector);
+    $(el).click();
+  });
+}
 
 describe('Calculator', function() {
-  before(setup);
-  //after(teardown);
+  describe('足し算', function() {
+    before(function() {
+      setup();
+      click('1', '+', '3', '=');
+    });
+    after(teardown);
 
-  it('ボタン１を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(1)').length).to.eql(1);
+    it('1足す3は4', function() {
+      expect(calculator.result).to.eql(4);
+    });
   });
 
-  it('ボタン2を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(2)').length).to.eql(1);
+  describe('引き算', function() {
+    before(function() {
+      setup();
+      click('1', '-', '3', '=');
+    });
+    after(teardown);
+
+    it('1引く3は-2', function() {
+      expect(calculator.result).to.eql(-2);
+    });
   });
 
-  it('ボタン3を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(3)').length).to.eql(1);
+  describe('掛け算', function() {
+    before(function() {
+      setup();
+      click('2', '*', '3', '=');
+    });
+    after(teardown);
+
+    it('2掛け3は6', function() {
+      expect(calculator.result).to.eql(6);
+    });
   });
 
-it('ボタン4を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(4)').length).to.eql(1);
-  });
+  describe('割り算', function() {
+    before(function() {
+      setup();
+      click('6', '/', '2', '=');
+    });
+    after(teardown);
 
-it('ボタン5を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(5)').length).to.eql(1);
-  });
-
-it('ボタン6を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(6)').length).to.eql(1);
-  });
-
-it('ボタン7を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(7)').length).to.eql(1);
-  });
-
-it('ボタン8を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(8)').length).to.eql(1);
-  });
-
-it('ボタン9を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(9)').length).to.eql(1);
-  });
-
-it('ボタン0を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(0)').length).to.eql(1);
-  });
-
-it('ボタン+を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(+)').length).to.eql(1);
-  });
-
-it('ボタン-を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(-)').length).to.eql(1);
+    it('6掛け2は3', function() {
+      expect(calculator.result).to.eql(3);
+    });
   });
 
 
-it('ボタン*を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(*)').length).to.eql(1);
+  describe('components', function() {
+    before(setup);
+    after(teardown);
+
+    it('ボタン１を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(1)').length).to.eql(1);
+    });
+
+    it('ボタン2を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(2)').length).to.eql(1);
+    });
+
+    it('ボタン3を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(3)').length).to.eql(1);
+    });
+
+    it('ボタン4を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(4)').length).to.eql(1);
+    });
+
+    it('ボタン5を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(5)').length).to.eql(1);
+    });
+
+    it('ボタン6を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(6)').length).to.eql(1);
+    });
+
+    it('ボタン7を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(7)').length).to.eql(1);
+    });
+
+    it('ボタン8を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(8)').length).to.eql(1);
+    });
+
+    it('ボタン9を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(9)').length).to.eql(1);
+    });
+
+    it('ボタン0を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(0)').length).to.eql(1);
+    });
+
+    it('ボタン+を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(+)').length).to.eql(1);
+    });
+
+    it('ボタン-を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(-)').length).to.eql(1);
+    });
+
+    it('ボタン*を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(*)').length).to.eql(1);
+    });
+
+    it('ボタン/を表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(/)').length).to.eql(1);
+    });
+
+    it('ボタンcを表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(c)').length).to.eql(2);
+    });
+
+    it('ボタンcaを表示する', function() {
+      expect(calculator.$el.find('.calculator-button:contains(ca)').length).to.eql(1);
+    });
   });
-
-it('ボタン/を表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(/)').length).to.eql(1);
-  });
-
-
-it('ボタンcを表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(c)').length).to.eql(2);
-  });
-
-it('ボタンcaを表示する', function() {
-    expect(calculator.$el.find('.calculator-button:contains(ca)').length).to.eql(1);
-  });
-
 
 
 
@@ -256,4 +325,4 @@ it('ボタンcaを表示する', function() {
 });
 
 
-},{"../lib/Calculator.js":2}]},{},[4]);
+},{"../lib/Calculator.js":2,"jquery":"jquery"}]},{},[4]);

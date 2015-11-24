@@ -1,15 +1,23 @@
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/randym\/dev\/motoumi\/moto-program\/calculator\/lib\/css\/calculator\.scss}line{font-family:\000031}}
 .screen {
   background-color: green;
-  line-height: 18px;
+  line-height: 80px;
+  font-size: 40px;
+  overflow: hidden;
   padding: 4px;
-  height: 18px;
+  height: 80px;
   color: #ddd;
   font-weight: 900;
   text-align: right;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/randym\/dev\/motoumi\/moto-program\/calculator\/lib\/css\/calculator\.scss}line{font-family:\0000310}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/randym\/dev\/motoumi\/moto-program\/calculator\/lib\/css\/calculator\.scss}line{font-family:\0000312}}
 .calculator-button {
-  width: 41px;
+  width: 80px;
+  font-size: 40px;
+  height: 80px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/randym\/dev\/motoumi\/moto-program\/calculator\/lib\/css\/calculator\.scss}line{font-family:\0000316}}
+.calculator-button:hover {
+  background-color: #d0d0d0;
 }

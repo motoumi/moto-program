@@ -1,12 +1,19 @@
 .screen {
   background-color: green;
-  line-height: 18px;
+  line-height: 80px;
+  font-size: 40px;
+  overflow: hidden;
   padding: 4px;
-  height: 18px;
+  height: 80px;
   color: #ddd;
   font-weight: 900;
   text-align: right;
 }
 .calculator-button {
-  width: 41px;
+  width: 80px;
+  font-size: 40px;
+  height: 80px;
+  &:hover {
+    background-color: darken(#ddd, 5%);
+  }
 }

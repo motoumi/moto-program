@@ -16,7 +16,7 @@ Screen.prototype = {
   },
 
   value(data) {
-    if(data) {
+    if(data !== undefined) {
       this.$el.text(data);
     }
     return parseInt(this.$el.text());

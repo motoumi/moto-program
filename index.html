@@ -1,0 +1,93 @@
+<html>
+  <head>
+  <style type="text/css">
+   #moto {
+   	  color:red;
+   	  font-size: large;
+   }
+  </style>
+ 
+  </head>
+
+<body>
+  <div id="moto">
+   a computer
+  </div>
+  <!--<form action="#">-->
+    <input id="a">
+    <input id="b">
+    <button id="add" title="go">add</button>
+
+    <button id="multiply">multiply</button>
+
+    <button id="subtraction">subtraction</button>
+
+    <button id="divide">divide</button>
+
+    <div id="multiply">
+    </div>
+   <!-- </form>-->
+    <div id="result">
+    </div>
+
+    <div id="subtraction">
+    </div>
+
+     <script type="text/javascript">
+
+      function get(id) {
+      	return document.getElementById(id);
+      };
+
+
+      function render(result) {
+      	get('result').innerHTML = result;
+      };
+      get('multiply').addEventListener('click', function() {
+       var result = paform('*');
+        render(result);
+    });
+
+      get('add').addEventListener('click', function() {
+      	var result = paform('+');
+      	render(result);
+    }); 
+
+      get('subtraction').addEventListener('click', function(){
+      	var result = paform('-');
+      	render(result);
+      });   
+
+      get('divide').addEventListener('click', function(){
+      	var result = paform('/');
+      	render(result);
+      });
+      function paform(what){
+      	var a = get('a').value;
+      	var b = get('b').value;
+      	var x = parseInt(a);
+      	var y = parseInt(b);
+      	if(isNaN(x) || isNaN(y)){
+      	 return NaN;
+      	}
+
+       if(what === '+' ){
+       	return x + y;
+      };
+
+       if(what === '*' ){
+        return x * y;
+      };
+
+       if(what === '-' ){
+       	return x - y;
+       };
+       if(what === '/' ){
+       	return x / y;
+       };
+                          };
+     
+  </script>
+ </body>
+</html>
+   
